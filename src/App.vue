@@ -3,6 +3,7 @@
     <header class="navbar">
       <div class="nav-container">
         <router-link to="/" class="logo">
+          <Logo :fill="'#66b1ea'" class="logo-comp" />
           <span class="logo-code">Code</span><span class="logo-nav">Nav</span>
         </router-link>
         <nav class="nav-links">
@@ -20,10 +21,16 @@
       </div>
       <nav class="mobile-nav" v-if="mobileMenuOpen">
         <router-link to="/" @click="closeMobileMenu">Home</router-link>
-        <router-link to="/products" @click="closeMobileMenu">Products</router-link>
+        <router-link to="/products" @click="closeMobileMenu"
+          >Products</router-link
+        >
         <router-link to="/about" @click="closeMobileMenu">About</router-link>
-        <router-link to="/tech-stack" @click="closeMobileMenu">Tech Stack</router-link>
-        <router-link to="/contact" @click="closeMobileMenu">Contact</router-link>
+        <router-link to="/tech-stack" @click="closeMobileMenu"
+          >Tech Stack</router-link
+        >
+        <router-link to="/contact" @click="closeMobileMenu"
+          >Contact</router-link
+        >
       </nav>
     </header>
     <router-view v-slot="{ Component }">
@@ -33,6 +40,10 @@
     </router-view>
     <footer class="footer">
       <div class="footer-content">
+        <div class="company-logo">
+          <Logo :fill="'#ffffff'" class="logo" />
+          <span>CodeNav</span>
+        </div>
         <p>&copy; 2025 CodeNav Technology Ltd. All rights reserved.</p>
         <p class="footer-tagline">Building Tomorrow's Software Today</p>
       </div>
@@ -41,17 +52,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from "vue";
+import Logo from "./components/logo.vue";
 
-const mobileMenuOpen = ref(false)
+const mobileMenuOpen = ref(false);
 
 const toggleMobileMenu = () => {
-  mobileMenuOpen.value = !mobileMenuOpen.value
-}
+  mobileMenuOpen.value = !mobileMenuOpen.value;
+};
 
 const closeMobileMenu = () => {
-  mobileMenuOpen.value = false
-}
+  mobileMenuOpen.value = false;
+};
 </script>
 
 <style lang="scss">
@@ -62,7 +74,8 @@ const closeMobileMenu = () => {
 }
 
 #app {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
@@ -95,6 +108,12 @@ const closeMobileMenu = () => {
   display: flex;
   align-items: center;
   transition: all 0.3s;
+
+  .logo-comp {
+    width: 40px;
+    height: 40px;
+    margin-right: 0.4rem;
+  }
 }
 
 .logo:hover {
@@ -127,7 +146,7 @@ const closeMobileMenu = () => {
 }
 
 .nav-links a::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -5px;
   left: 0;
@@ -200,7 +219,11 @@ const closeMobileMenu = () => {
 
 .mobile-nav a:hover,
 .mobile-nav a.router-link-active {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.1) 0%,
+    rgba(118, 75, 162, 0.1) 100%
+  );
   color: #667eea;
 }
 
@@ -210,6 +233,21 @@ const closeMobileMenu = () => {
   padding: 2rem;
   text-align: center;
   margin-top: auto;
+
+  .company-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1.6rem;
+
+    .logo {
+      width: 36px;
+      height: 36px;
+    }
+  }
 }
 
 .footer-content p {
