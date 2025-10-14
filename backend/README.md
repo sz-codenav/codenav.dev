@@ -23,7 +23,7 @@ Backend API service for the CodeNav contact form, built with Express.js and MySQ
 
 1. Install dependencies:
 ```bash
-npm install
+pnpm install
 ```
 
 2. Set up the database:
@@ -32,9 +32,10 @@ mysql -u root -p < schema.sql
 ```
 
 3. Configure the application:
-   - Edit `src/config/config.ts`
+   - Copy `src/config/config.example.ts` to `src/config/config.ts`
    - Update `configDev` for development settings
    - Update `configProd` for production settings
+   - Never commit `config.ts` with real credentials
 
 ## Configuration
 
@@ -54,12 +55,18 @@ Key configuration options:
 
 ### Development Mode
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 ### Production Mode
 ```bash
-npm start
+pnpm start
+```
+
+### Deploy to Production Server
+```bash
+# Always deploys with production configuration
+pnpm run deploy
 ```
 
 ## API Endpoints

@@ -21,6 +21,15 @@ export interface RateLimitConfig {
   message: string;
 }
 
+export interface DeploymentConfig {
+  host: string;
+  port: number;
+  username: string;
+  password?: string;
+  privateKeyPath?: string;
+  remotePath: string;
+}
+
 export interface Config {
   env: string;
   port: number;
@@ -28,6 +37,7 @@ export interface Config {
   database: DatabaseConfig;
   cors: CorsConfig;
   rateLimit: RateLimitConfig;
+  deployment?: DeploymentConfig;
 }
 
 export interface ContactData {

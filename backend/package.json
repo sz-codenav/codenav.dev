@@ -8,6 +8,7 @@
     "start": "NODE_ENV=production node dist/server.js",
     "dev": "NODE_ENV=development nodemon",
     "clean": "rm -rf dist",
+    "deploy": "pnpm run build && ts-node scripts/upload.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -32,8 +33,11 @@
     "@types/node": "^20.10.5",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",
+    "chalk": "^5.6.2",
     "eslint": "^8.56.0",
+    "node-ssh": "^13.2.1",
     "nodemon": "^3.0.2",
+    "ora": "^9.0.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.3.3"
