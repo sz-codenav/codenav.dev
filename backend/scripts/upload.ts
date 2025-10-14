@@ -160,67 +160,6 @@ async function upload() {
     }
     configSpinner.succeed('Configuration files uploaded');
 
-    // Install dependencies on remote server
-    const installSpinner = ora('Installing dependencies on remote server...').start();
-    
-    // Check which package manager is available
-    const { code: npmCheck } = await ssh.execCommand('which npm');
-    const { code: pnpmCheck } = await ssh.execCommand('which pnpm');
-    
-    let installCommand = '';
-    if (pnpmCheck === 0) {
-      installCommand = 'pnpm install --prod';
-    } else if (npmCheck === 0) {
-      installCommand = 'npm install --production';
-    } else {
-      installSpinner.warn('No package manager found on server (npm/pnpm)');
-      console.log(chalk.yellow('Please install dependencies manually on the server'));
-    }
-    
-    if (installCommand) {
-      const { stderr, code } = await ssh.execCommand(installCommand, {
-        cwd: remotePath
-      });
-
-      if (code === 0) {
-        installSpinner.succeed(`Dependencies installed successfully using ${installCommand.split(' ')[0]}`);
-      } else {
-        installSpinner.fail('Failed to install dependencies');
-        console.log(chalk.red('Error output:'), stderr);
-      }
-    }
-
-    // Restart the application (check for PM2, systemctl, or manual node)
-    const restartSpinner = ora('Checking application management...').start();
-    
-    const { code: pm2Check } = await ssh.execCommand('which pm2');
-    const { code: nodeCheck } = await ssh.execCommand('which node');
-    
-    if (pm2Check === 0) {
-      restartSpinner.text = 'Restarting application with PM2...';
-      const { code: restartCode } = await ssh.execCommand(`
-        cd ${remotePath} && 
-        (pm2 restart codenav-backend || pm2 start dist/server.js --name codenav-backend)
-      `);
-      
-      if (restartCode === 0) {
-        restartSpinner.succeed('Application restarted successfully with PM2');
-      } else {
-        restartSpinner.fail('Failed to restart with PM2');
-      }
-    } else if (nodeCheck === 0) {
-      restartSpinner.info('PM2 not found on server');
-      console.log(chalk.yellow('\nTo run the application:'));
-      console.log(chalk.cyan(`  cd ${remotePath}`));
-      console.log(chalk.cyan('  node dist/server.js'));
-      console.log(chalk.yellow('\nFor production, consider installing PM2:'));
-      console.log(chalk.cyan('  npm install -g pm2'));
-      console.log(chalk.cyan('  pm2 start dist/server.js --name codenav-backend'));
-    } else {
-      restartSpinner.fail('Node.js not found on server');
-      console.log(chalk.red('Please install Node.js on the server first'));
-    }
-
     console.log(chalk.green('\n✅ Deployment completed successfully!\n'));
 
     // Display summary
@@ -229,6 +168,14 @@ async function upload() {
     console.log(chalk.gray(`  - Backup created: ${backupPath}`));
     console.log(chalk.gray(`  - Remote path: ${remotePath}`));
     console.log(chalk.gray(`  - Server: ${host}\n`));
+
+    // Manual instructions
+    console.log(chalk.yellow('📝 Next steps on your server:'));
+    console.log(chalk.cyan(`  1. SSH to server: ssh ${username}@${host}`));
+    console.log(chalk.cyan(`  2. Navigate to: cd ${remotePath}`));
+    console.log(chalk.cyan(`  3. Install dependencies: npm install --production`));
+    console.log(chalk.cyan(`  4. Run application: node dist/server.js`));
+    console.log(chalk.cyan(`  5. Or with PM2: pm2 start dist/server.js --name codenav-backend\n`));
 
   } catch (error) {
     connectSpinner.fail('Deployment failed');

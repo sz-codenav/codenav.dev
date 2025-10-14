@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "build": "tsc",
-    "start": "NODE_ENV=production node dist/server.js",
+    "start": "NODE_ENV=production node server.js",
     "dev": "NODE_ENV=development nodemon",
     "clean": "rm -rf dist",
     "deploy": "pnpm run build && ts-node scripts/upload.ts",

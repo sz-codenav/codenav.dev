@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
-import ContactModel from '@models/contactModel';
+import ContactModel from '../models/contactModel';
 import { ContactData, Contact, ApiResponse, PaginationResponse } from '../types';
 
 class ContactController {

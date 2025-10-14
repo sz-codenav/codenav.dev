@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { getPool } from '@config/database';
+import { getPool } from '../config/database';
 import { ApiResponse } from '../types';
 
 const router: Router = Router();

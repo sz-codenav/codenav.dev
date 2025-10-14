@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import ContactController from '@controllers/contactController';
+import ContactController from '../controllers/contactController';
 import {
   contactValidationRules,
   paginationValidationRules,
   idValidationRules,
   statusValidationRules
-} from '@middleware/validation';
+} from '../middleware/validation';
 
 const router: Router = Router();
 

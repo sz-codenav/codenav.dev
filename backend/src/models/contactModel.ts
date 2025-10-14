@@ -1,5 +1,5 @@
 import { RowDataPacket, ResultSetHeader } from 'mysql2';
-import { getPool } from '@config/database';
+import { getPool } from '../config/database';
 import { Contact, ContactData } from '../types';
 
 interface ContactRow extends RowDataPacket, Contact {}

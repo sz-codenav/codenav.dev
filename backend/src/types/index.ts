@@ -28,6 +28,7 @@ export interface DeploymentConfig {
   password?: string;
   privateKeyPath?: string;
   remotePath: string;
+  nodePath?: string; // Optional: explicit path to node installation, e.g., '/usr/local/bin'
 }
 
 export interface Config {

@@ -4,11 +4,11 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { Server } from 'http';
 
-import config from '@config/config';
-import { initializeDatabase, closeDatabase } from '@config/database';
-import { errorHandler, notFoundHandler } from '@middleware/errorHandler';
-import contactRoutes from '@routes/contactRoutes';
-import healthRoutes from '@routes/healthRoutes';
+import config from './config/config';
+import { initializeDatabase, closeDatabase } from './config/database';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler';
+import contactRoutes from './routes/contactRoutes';
+import healthRoutes from './routes/healthRoutes';
 
 const app: Application = express();
 
