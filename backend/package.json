@@ -4,7 +4,8 @@
   "description": "Backend API for CodeNav contact form",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "update": "node scripts/version.js",
+    "build": "pnpm run update && tsc && tsc-alias",
     "start": "NODE_ENV=production node index.js",
     "dev": "nodemon -e ts,json,js --watch ./src --exec 'ts-node -r dotenv/config src/index.ts --project tsconfig.json'",
     "clean": "rm -rf dist",
