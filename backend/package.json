@@ -2,11 +2,11 @@
   "name": "codenav-backend",
   "version": "1.0.0",
   "description": "Backend API for CodeNav contact form",
-  "main": "dist/server.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "NODE_ENV=production node server.js",
-    "dev": "NODE_ENV=development nodemon",
+    "start": "NODE_ENV=production node index.js",
+    "dev": "nodemon -e ts,json,js --watch ./src --exec 'ts-node -r dotenv/config src/index.ts --project tsconfig.json'",
     "clean": "rm -rf dist",
     "deploy": "pnpm run build && ts-node scripts/upload.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,7 +25,9 @@
     "express-rate-limit": "^7.1.5",
     "express-validator": "^7.0.1",
     "helmet": "^7.1.0",
-    "mysql2": "^3.6.5"
+    "mysql2": "^3.6.5",
+    "winston": "^3.19.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",

@@ -1,0 +1,73 @@
+name: Deploy Backend
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "backend/**"
+      - ".github/workflows/deploy-backend.yml"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build backend
+        run: |
+          cd backend
+          pnpm run build
+
+      - name: Move Dist to Root
+        run: |
+          cd backend
+          rm -rf ./src
+          mkdir -p ./src
+          mv ./dist/* ./src
+          rm -rf ./dist
+          cd ..
+          mv backend codenav-site
+
+      - name: Deploy to server
+        uses: appleboy/scp-action@v1
+        with:
+          host: 47.76.223.175
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "codenav-site/"
+          target: "~/"
+          overwrite: true
+
+      - name: Install dependencies and reload PM2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 47.76.223.175
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            nvm use 24
+            cd ~/codenav-site
+            pnpm install --frozen-lockfile
+            pm2 reload codenav-site

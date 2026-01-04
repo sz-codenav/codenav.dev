@@ -11,16 +11,10 @@
       <div class="contact-info">
         <h2>Get in Touch</h2>
         <div class="info-item">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
             <path
-              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-            />
+              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
           <div>
             <h3>Email</h3>
@@ -28,13 +22,8 @@
           </div>
         </div>
         <div class="info-item">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
             <circle cx="12" cy="12" r="10" />
             <polyline points="12 6 12 12 16 14" />
           </svg>
@@ -45,91 +34,56 @@
         </div>
       </div>
 
-      <div class="cal-inline">
+      <!-- <div class="cal-inline">
         <iframe
           src="https://cal.com/xiaodong2008/busniess"
           width="100%"
           height="100%"
           frameborder="0"
         ></iframe>
-      </div>
+      </div> -->
 
-      <form @submit.prevent="handleSubmit" class="contact-form" v-if="false">
+      <form @submit.prevent="handleSubmit" class="contact-form" v-if="true">
         <div class="form-row">
           <div class="form-group">
             <label for="name">Full Name</label>
-            <input
-              type="text"
-              id="name"
-              v-model="formData.name"
-              placeholder="John Doe"
-              :class="{ 'has-value': formData.name }"
-              required
-            />
+            <input type="text" id="name" v-model="formData.name" placeholder="John Doe"
+              :class="{ 'has-value': formData.name }" required />
           </div>
           <div class="form-group">
             <label for="email">Email Address</label>
-            <input
-              type="email"
-              id="email"
-              v-model="formData.email"
-              placeholder="john@example.com"
-              :class="{ 'has-value': formData.email }"
-              required
-            />
+            <input type="email" id="email" v-model="formData.email" placeholder="john@example.com"
+              :class="{ 'has-value': formData.email }" required />
           </div>
         </div>
 
         <div class="form-group">
           <label for="subject">Subject</label>
-          <input
-            type="text"
-            id="subject"
-            v-model="formData.subject"
-            placeholder="How can we help you?"
-            :class="{ 'has-value': formData.subject }"
-            required
-          />
+          <input type="text" id="subject" v-model="formData.subject" placeholder="How can we help you?"
+            :class="{ 'has-value': formData.subject }" required />
         </div>
 
         <div class="form-group">
           <label for="message">Your Message</label>
-          <textarea
-            id="message"
-            v-model="formData.message"
-            placeholder="Tell us more about your project or inquiry..."
-            :class="{ 'has-value': formData.message }"
-            rows="6"
-            required
-          ></textarea>
+          <textarea id="message" v-model="formData.message" placeholder="Tell us more about your project or inquiry..."
+            :class="{ 'has-value': formData.message }" rows="6" required></textarea>
         </div>
 
         <button type="submit" class="submit-btn" :disabled="isSubmitting">
           <span v-if="!isSubmitting">Send Message</span>
           <span v-else class="loading">
             <svg class="spinner" viewBox="0 0 24 24">
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                stroke-width="3"
-                fill="none"
-                stroke-dasharray="31.416"
-                stroke-dashoffset="31.416"
-              >
-                <animate
-                  attributeName="stroke-dashoffset"
-                  dur="1s"
-                  repeatCount="indefinite"
-                  from="31.416"
-                  to="0"
-                />
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none"
+                stroke-dasharray="31.416" stroke-dashoffset="31.416">
+                <animate attributeName="stroke-dashoffset" dur="1s" repeatCount="indefinite" from="31.416" to="0" />
               </circle>
             </svg>
             Sending...
           </span>
         </button>
+
+        <a href="https://cal.com/xiaodong2008/busniess" target="_blank" class="cal-btn">Book a Cal
+          Meeting</a>
 
         <div v-if="statusMessage" :class="['status-message', statusType]">
           {{ statusMessage }}
@@ -158,9 +112,19 @@ const handleSubmit = async () => {
   statusMessage.value = "";
 
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const response = await fetch("/api/message", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
-    console.log("Form submitted:", formData);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to send message");
+    }
 
     statusMessage.value = "Thank you! Your message has been sent successfully.";
     statusType.value = "success";
@@ -169,7 +133,8 @@ const handleSubmit = async () => {
       formData[key as keyof typeof formData] = "";
     });
   } catch (error) {
-    statusMessage.value = "Oops! Something went wrong. Please try again.";
+    console.error("Error submitting form:", error);
+    statusMessage.value = error instanceof Error ? error.message : "Oops! Something went wrong. Please try again.";
     statusType.value = "error";
   } finally {
     isSubmitting.value = false;
@@ -375,12 +340,12 @@ $transition: all 0.3s ease;
 
   .submit-btn {
     width: 100%;
-    padding: $spacing-sm $spacing-lg;
+    padding: 12px $spacing-lg;
     background: $primary-gradient;
     color: $white;
     border: none;
     border-radius: calc($border-radius / 2);
-    font-size: 1.1rem;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition: $transition;
@@ -411,6 +376,23 @@ $transition: all 0.3s ease;
     }
   }
 
+  .cal-btn {
+    width: 100%;
+    padding: 12px $spacing-lg;
+    background: black;
+    color: $white;
+    border: none;
+    border-radius: calc($border-radius / 2);
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: $spacing-sm;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
   .status-message {
     margin-top: $spacing-md;
     padding: $spacing-sm;
@@ -438,6 +420,7 @@ $transition: all 0.3s ease;
     opacity: 0;
     transform: translateY(-30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -449,6 +432,7 @@ $transition: all 0.3s ease;
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -460,6 +444,7 @@ $transition: all 0.3s ease;
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

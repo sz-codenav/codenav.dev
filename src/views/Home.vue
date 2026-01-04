@@ -10,18 +10,17 @@
           Developer-Led Innovation • Cutting-Edge Technology • User-First Design
         </p>
         <div class="cta-buttons">
-          <router-link to="/products" class="btn btn-primary"
-            >Explore Our Products</router-link
-          >
-          <router-link to="/tech-stack" class="btn btn-secondary"
-            >Our Tech Stack</router-link
-          >
+          <router-link to="/products" class="btn btn-primary">Explore Our Products</router-link>
+          <!-- <router-link to="/tech-stack" class="btn btn-secondary">Our Tech Stack</router-link> -->
         </div>
       </div>
-      <div class="hero-animation">
+      <!-- <div class="hero-animation">
         <div class="code-block">
           <pre><code>{{ codeAnimation }}</code></pre>
         </div>
+      </div> -->
+      <div class="hero-image">
+        <logo :black="false" :width="500" :height="500" class="logo-image" />
       </div>
     </section>
 
@@ -74,9 +73,7 @@
               Advanced grammar checking and writing enhancement tool powered by
               AI
             </p>
-            <router-link to="/products" class="learn-more"
-              >Learn More →</router-link
-            >
+            <router-link to="/products" class="learn-more">Learn More →</router-link>
           </div>
           <div class="product-card traffictrack">
             <h3>TrafficTrack</h3>
@@ -84,9 +81,7 @@
               Real-time traffic analytics and optimization platform for modern
               businesses
             </p>
-            <router-link to="/products" class="learn-more"
-              >Learn More →</router-link
-            >
+            <router-link to="/products" class="learn-more">Learn More →</router-link>
           </div>
         </div>
       </div>
@@ -96,59 +91,12 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-
-const codeAnimation = ref(`const innovation = () => {
-  while (true) {
-    create();
-    innovate();
-    deliver();
-  }
-};`);
-
-// Commented out for future animation implementation
-// const codeSnippets = [
-//   `const innovation = () => {
-//   while (true) {
-//     create();
-//     innovate();
-//     deliver();
-//   }
-// };`,
-//   `class CodeNav {
-//   build() {
-//     return software
-//       .withQuality()
-//       .withSpeed()
-//       .withLove();
-//   }
-// }`,
-//   `async function future() {
-//   const tech = await latest();
-//   const users = await happy();
-//   return success;
-// }`,
-// ];
-
-// const stackList = [`Rolldown`, `Vue`, `TsDown`, `React`, `Swift`, ``];
-
-// let animationIndex = 0;
-// let animationInterval: number;
-
-// onMounted(() => {
-//   animationInterval = setInterval(() => {
-//     animationIndex = (animationIndex + 1) % codeSnippets.length
-//     codeAnimation.value = codeSnippets[animationIndex]
-//   }, 3000)
-// })
-
-// onUnmounted(() => {
-//   clearInterval(animationInterval);
-// });
+import Logo from "../components/logo.vue";
 </script>
 
 <style scoped lang="scss">
 // Variables
-$primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+$primary-gradient: linear-gradient(135deg, #858585 0%, #000000 100%);
 $secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
 $primary-color: #667eea;
 $secondary-color: #764ba2;
@@ -191,7 +139,7 @@ $mobile-breakpoint: 768px;
   height: 50vh;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: left;
   padding: 2rem 5%;
   background: $primary-gradient;
   color: $white;
@@ -215,6 +163,15 @@ $mobile-breakpoint: 768px;
   max-width: 600px;
 }
 
+.hero-image {
+  position: absolute;
+  right: 330px;
+  top: 100px;
+  width: 100px;
+  height: 100px;
+  opacity: 0.1;
+}
+
 .company-name {
   font-size: 4rem;
   font-weight: 900;
@@ -226,7 +183,7 @@ $mobile-breakpoint: 768px;
   }
 
   .nav {
-    @include gradient-text(linear-gradient(90deg, #47eded, #4498e7));
+    // @include gradient-text(linear-gradient(90deg, #47eded, #4498e7));
   }
 }
 
@@ -412,6 +369,7 @@ $mobile-breakpoint: 768px;
 }
 
 @keyframes shimmer {
+
   0%,
   100% {
     transform: rotate(0deg);
